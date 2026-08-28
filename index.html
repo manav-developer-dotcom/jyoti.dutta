@@ -1,0 +1,794 @@
+
+html_template = '''<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A Raksha Bandhan tribute to Jyoti Dutta - celebrating her beautiful journey">
+    <title>For Jyoti — Happy Raksha Bandhan</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Poppins:wght@300;400;500;600;700&family=Great+Vibes&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --maroon: #8B1A1A;
+            --deep-maroon: #5C0F0F;
+            --gold: #D4AF37;
+            --light-gold: #F4E4BC;
+            --cream: #FFF8F0;
+            --soft-pink: #FFF0F3;
+            --rose: #C97B7B;
+            --charcoal: #2D2D2D;
+            --soft-gray: #6B6B6B;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--cream);
+            color: var(--charcoal);
+            overflow-x: hidden;
+            line-height: 1.7;
+        }
+
+        /* ─── Floating Petals ─── */
+        .petals-container {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 1000;
+            overflow: hidden;
+        }
+        .petal {
+            position: absolute;
+            width: 12px; height: 12px;
+            background: linear-gradient(135deg, var(--rose), var(--gold));
+            border-radius: 50% 0 50% 50%;
+            opacity: 0.6;
+            animation: fall linear infinite;
+        }
+        @keyframes fall {
+            0% { transform: translateY(-10vh) rotate(0deg) translateX(0); opacity: 0; }
+            10% { opacity: 0.6; }
+            90% { opacity: 0.6; }
+            100% { transform: translateY(110vh) rotate(720deg) translateX(50px); opacity: 0; }
+        }
+
+        /* ─── Scroll Reveal ─── */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.9s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        .reveal.visible { opacity: 1; transform: translateY(0); }
+        .reveal-delay-1 { transition-delay: 0.15s; }
+        .reveal-delay-2 { transition-delay: 0.3s; }
+        .reveal-delay-3 { transition-delay: 0.45s; }
+        .reveal-delay-4 { transition-delay: 0.6s; }
+
+        /* ─── Hero Section ─── */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            background: linear-gradient(135deg, var(--deep-maroon) 0%, var(--maroon) 50%, #A03030 100%);
+            position: relative;
+            overflow: hidden;
+            padding: 2rem;
+        }
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            background: radial-gradient(circle, rgba(212,175,55,0.08) 0%, transparent 60%);
+            animation: pulse-glow 6s ease-in-out infinite;
+        }
+        @keyframes pulse-glow {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.1); opacity: 1; }
+        }
+        .rakhi-icon {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+            animation: float 3s ease-in-out infinite;
+            filter: drop-shadow(0 4px 20px rgba(212,175,55,0.4));
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+        .hero h1 {
+            font-family: 'Great Vibes', cursive;
+            font-size: clamp(3rem, 8vw, 6rem);
+            color: var(--light-gold);
+            text-shadow: 2px 2px 20px rgba(0,0,0,0.3);
+            margin-bottom: 0.5rem;
+            position: relative;
+            z-index: 1;
+        }
+        .hero .subtitle {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.2rem, 3vw, 1.8rem);
+            color: rgba(255,255,255,0.9);
+            font-weight: 400;
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 1;
+        }
+        .hero .name {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            color: #fff;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            position: relative;
+            z-index: 1;
+            letter-spacing: 2px;
+        }
+        .hero .name::after {
+            content: '';
+            display: block;
+            width: 80px; height: 3px;
+            background: var(--gold);
+            margin: 1rem auto 0;
+            border-radius: 2px;
+        }
+        .scroll-indicator {
+            position: absolute;
+            bottom: 2rem; left: 50%;
+            transform: translateX(-50%);
+            color: var(--light-gold);
+            font-size: 0.85rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            animation: bounce 2s infinite;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        @keyframes bounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(-10px); }
+        }
+        .scroll-indicator::after {
+            content: '↓';
+            display: block;
+            text-align: center;
+            margin-top: 0.5rem;
+            font-size: 1.2rem;
+        }
+
+        /* ─── Section Headers ─── */
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+            padding: 0 1rem;
+        }
+        .section-header h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2rem, 4vw, 3rem);
+            color: var(--maroon);
+            margin-bottom: 1rem;
+            position: relative;
+            display: inline-block;
+        }
+        .section-header h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px; left: 50%;
+            transform: translateX(-50%);
+            width: 60px; height: 3px;
+            background: var(--gold);
+            border-radius: 2px;
+        }
+        .section-header p {
+            color: var(--soft-gray);
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 1.5rem auto 0;
+        }
+
+        /* ─── Journey Timeline ─── */
+        .journey {
+            padding: 6rem 2rem;
+            background: linear-gradient(to bottom, var(--cream), var(--soft-pink));
+            position: relative;
+        }
+        .timeline {
+            max-width: 1000px;
+            margin: 0 auto;
+            position: relative;
+            padding: 2rem 0;
+        }
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 3px; height: 100%;
+            background: linear-gradient(to bottom, var(--maroon), var(--gold), var(--maroon));
+            border-radius: 3px;
+        }
+        .timeline-item {
+            display: flex;
+            justify-content: flex-end;
+            padding-right: 50%;
+            position: relative;
+            margin-bottom: 4rem;
+        }
+        .timeline-item:nth-child(even) {
+            justify-content: flex-start;
+            padding-right: 0;
+            padding-left: 50%;
+        }
+        .timeline-content {
+            background: #fff;
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(139, 26, 26, 0.08);
+            max-width: 420px;
+            margin: 0 2rem;
+            position: relative;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .timeline-content:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 50px rgba(139, 26, 26, 0.12);
+        }
+        .timeline-content::before {
+            content: '';
+            position: absolute;
+            top: 2rem;
+            width: 20px; height: 20px;
+            background: var(--gold);
+            border: 4px solid var(--maroon);
+            border-radius: 50%;
+            z-index: 2;
+        }
+        .timeline-item:nth-child(odd) .timeline-content::before { right: -2.6rem; }
+        .timeline-item:nth-child(even) .timeline-content::before { left: -2.6rem; }
+        .timeline-content img {
+            width: 100%;
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+            object-fit: cover;
+            height: 280px;
+            transition: transform 0.4s ease;
+        }
+        .timeline-content:hover img { transform: scale(1.02); }
+        .timeline-content h3 {
+            font-family: 'Playfair Display', serif;
+            color: var(--maroon);
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .timeline-content .year {
+            display: inline-block;
+            background: var(--soft-pink);
+            color: var(--maroon);
+            padding: 0.3rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+        .timeline-content p {
+            color: var(--soft-gray);
+            font-size: 0.95rem;
+            line-height: 1.8;
+        }
+
+        /* ─── Yoga Dream Section ─── */
+        .yoga-dream {
+            padding: 6rem 2rem;
+            background: linear-gradient(135deg, #f8f4f0 0%, #fff 50%, #f0f4f8 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        .yoga-dream::before {
+            content: '✦';
+            position: absolute;
+            top: 10%; right: 10%;
+            font-size: 8rem;
+            color: rgba(212,175,55,0.06);
+            font-family: serif;
+        }
+        .yoga-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+        .yoga-text h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2rem;
+            color: var(--maroon);
+            margin-bottom: 1.5rem;
+            line-height: 1.3;
+        }
+        .yoga-text p {
+            color: var(--soft-gray);
+            margin-bottom: 1.5rem;
+            font-size: 1.05rem;
+        }
+        .yoga-quote {
+            background: linear-gradient(135deg, var(--soft-pink), #fff);
+            border-left: 4px solid var(--gold);
+            padding: 1.5rem 2rem;
+            border-radius: 0 12px 12px 0;
+            font-style: italic;
+            color: var(--maroon);
+            font-family: 'Playfair Display', serif;
+            font-size: 1.1rem;
+            margin-top: 2rem;
+        }
+        .yoga-visual { position: relative; }
+        .yoga-visual .circle-bg {
+            position: absolute;
+            width: 400px; height: 400px;
+            border: 2px dashed var(--gold);
+            border-radius: 50%;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            animation: spin 30s linear infinite;
+        }
+        @keyframes spin {
+            from { transform: translate(-50%, -50%) rotate(0deg); }
+            to { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+        .yoga-visual .inner-circle {
+            width: 320px; height: 320px;
+            background: linear-gradient(135deg, var(--maroon), #A03030);
+            border-radius: 50%;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            z-index: 1;
+            box-shadow: 0 20px 60px rgba(139, 26, 26, 0.2);
+        }
+        .yoga-visual .inner-circle span { font-size: 6rem; filter: grayscale(1) brightness(2); }
+        .startup-badge {
+            position: absolute;
+            bottom: 20px; right: 20px;
+            background: #fff;
+            padding: 1rem 1.5rem;
+            border-radius: 16px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+            text-align: center;
+            z-index: 2;
+        }
+        .startup-badge strong {
+            display: block;
+            color: var(--maroon);
+            font-size: 0.9rem;
+            margin-bottom: 0.3rem;
+        }
+        .startup-badge span {
+            color: var(--gold);
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+
+        /* ─── Travel Gallery ─── */
+        .travel {
+            padding: 6rem 2rem;
+            background: var(--cream);
+        }
+        .gallery {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        .gallery-card {
+            position: relative;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            transition: all 0.4s ease;
+            cursor: pointer;
+            height: 400px;
+        }
+        .gallery-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 25px 60px rgba(0,0,0,0.15);
+        }
+        .gallery-card img {
+            width: 100%; height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s ease;
+        }
+        .gallery-card:hover img { transform: scale(1.1); }
+        .gallery-card .overlay {
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            padding: 2rem;
+            background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
+            color: #fff;
+            transform: translateY(20px);
+            opacity: 0;
+            transition: all 0.4s ease;
+        }
+        .gallery-card:hover .overlay {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        .gallery-card .overlay h4 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .gallery-card .overlay p { font-size: 0.9rem; opacity: 0.9; }
+        .gallery-card.featured { grid-column: span 2; }
+
+        /* ─── Message Section ─── */
+        .message {
+            padding: 6rem 2rem;
+            background: linear-gradient(135deg, var(--deep-maroon), var(--maroon));
+            position: relative;
+            overflow: hidden;
+        }
+        .message::before {
+            content: '"';
+            position: absolute;
+            top: 2rem; left: 5%;
+            font-family: 'Playfair Display', serif;
+            font-size: 20rem;
+            color: rgba(255,255,255,0.03);
+            line-height: 1;
+        }
+        .message-container {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+        .message-container h2 {
+            font-family: 'Great Vibes', cursive;
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            color: var(--light-gold);
+            margin-bottom: 2rem;
+        }
+        .message-container .letter {
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 24px;
+            padding: 3rem;
+            text-align: left;
+            color: rgba(255,255,255,0.9);
+            font-size: 1.05rem;
+            line-height: 2;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+        }
+        .message-container .letter p { margin-bottom: 1.5rem; }
+        .message-container .letter .highlight {
+            color: var(--gold);
+            font-weight: 600;
+        }
+        .message-container .signature {
+            margin-top: 2rem;
+            font-family: 'Great Vibes', cursive;
+            font-size: 2rem;
+            color: var(--light-gold);
+        }
+        .rakhi-date {
+            margin-top: 1rem;
+            color: rgba(255,255,255,0.6);
+            font-size: 0.9rem;
+            letter-spacing: 2px;
+        }
+
+        /* ─── Footer ─── */
+        footer {
+            background: var(--deep-maroon);
+            padding: 3rem 2rem;
+            text-align: center;
+            color: rgba(255,255,255,0.5);
+        }
+        footer .heart {
+            color: var(--rose);
+            animation: heartbeat 1.5s ease-in-out infinite;
+            display: inline-block;
+        }
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        /* ─── Responsive ─── */
+        @media (max-width: 768px) {
+            .timeline::before { left: 20px; }
+            .timeline-item, .timeline-item:nth-child(even) {
+                justify-content: flex-start;
+                padding-right: 0;
+                padding-left: 50px;
+            }
+            .timeline-content { margin: 0; max-width: 100%; }
+            .timeline-item:nth-child(odd) .timeline-content::before,
+            .timeline-item:nth-child(even) .timeline-content::before {
+                left: -2.6rem; right: auto;
+            }
+            .yoga-container { grid-template-columns: 1fr; gap: 2rem; }
+            .gallery-card.featured { grid-column: span 1; }
+            .yoga-visual .circle-bg { width: 280px; height: 280px; }
+            .yoga-visual .inner-circle { width: 220px; height: 220px; }
+        }
+
+        /* ─── Typewriter ─── */
+        .typewriter {
+            overflow: hidden;
+            border-right: 3px solid var(--gold);
+            white-space: nowrap;
+            animation: typing 3.5s steps(30, end), blink-caret 0.75s step-end infinite;
+            max-width: fit-content;
+            margin: 0 auto;
+        }
+        @keyframes typing { from { width: 0 } to { width: 100% } }
+        @keyframes blink-caret { from, to { border-color: transparent } 50% { border-color: var(--gold); } }
+        @media (max-width: 600px) {
+            .typewriter { white-space: normal; border: none; animation: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Floating Petals -->
+    <div class="petals-container" id="petals"></div>
+
+    <!-- ═══════════════════════════════════════ -->
+    <!-- HERO SECTION -->
+    <!-- ═══════════════════════════════════════ -->
+    <section class="hero">
+        <div class="rakhi-icon">🪷</div>
+        <p class="subtitle typewriter">Happy Raksha Bandhan</p>
+        <h1>For My Dearest Sister</h1>
+        <p class="name">Jyoti Dutta</p>
+        <p style="color: rgba(255,255,255,0.7); max-width: 500px; font-size: 1.1rem; position: relative; z-index: 1; line-height: 1.8;">
+            This is not just a thread of rakhi — it is a thread of memories, of pride, and of infinite love. 
+            Today, I celebrate YOU.
+        </p>
+        <a href="#journey" class="scroll-indicator">Begin the Journey</a>
+    </section>
+
+    <!-- ═══════════════════════════════════════ -->
+    <!-- JOURNEY TIMELINE -->
+    <!-- ═══════════════════════════════════════ -->
+    <section class="journey" id="journey">
+        <div class="section-header reveal">
+            <h2>The Journey of Jyoti</h2>
+            <p>From that tiny little girl in pigtails to the remarkable woman who inspires everyone around her — this is your story.</p>
+        </div>
+
+        <div class="timeline">
+            <div class="timeline-item reveal">
+                <div class="timeline-content">
+                    <img src="IMG_CHAIR" alt="Little Jyoti">
+                    <span class="year">The Beginning</span>
+                    <h3>That Adorable Little Soul</h3>
+                    <p>There you were — tiny, curious, and already stealing hearts. That little girl sitting on the red chair had no idea how far she would go, how many lives she would touch, and how proud her family would be.</p>
+                </div>
+            </div>
+
+            <div class="timeline-item reveal reveal-delay-1">
+                <div class="timeline-content">
+                    <img src="IMG_MOM" alt="Jyoti with Mom">
+                    <span class="year">Roots of Love</span>
+                    <h3>In Mother&apos;s Arms</h3>
+                    <p>Held safely in the arms of the woman who gave you everything. The love, the values, the strength — it all started here. You were always meant for greatness, and Mom knew it first.</p>
+                </div>
+            </div>
+
+            <div class="timeline-item reveal reveal-delay-2">
+                <div class="timeline-content">
+                    <img src="IMG_MUNNAR" alt="Travel to Munnar">
+                    <span class="year">The Explorer</span>
+                    <h3>Chasing Horizons</h3>
+                    <p>The mountains called, and you answered. From the misty tea gardens of Munnar to wherever your heart leads next — you have always been a free spirit, finding beauty in every corner of this world.</p>
+                </div>
+            </div>
+
+            <div class="timeline-item reveal reveal-delay-3">
+                <div class="timeline-content">
+                    <img src="IMG_PARIS" alt="Paris Proposal">
+                    <span class="year">A Dream Come True</span>
+                    <h3>Love in the City of Lights</h3>
+                    <p>Paris. The Eiffel Tower. Red balloons. A question that changed everything. You looked like a princess in pink, standing where dreams come true. You deserve every bit of this fairy tale, Didi.</p>
+                </div>
+            </div>
+
+            <div class="timeline-item reveal reveal-delay-4">
+                <div class="timeline-content">
+                    <img src="IMG_NIGHT" alt="Eiffel Tower at Night">
+                    <span class="year">Forever Glow</span>
+                    <h3>The World is Yours</h3>
+                    <p>Just like the Eiffel Tower lights up the Parisian night, you light up every room you enter. Your journey is only beginning, and the world is waiting to see all the incredible things you will do.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════ -->
+    <!-- YOGA DREAM SECTION -->
+    <!-- ═══════════════════════════════════════ -->
+    <section class="yoga-dream" id="yoga">
+        <div class="section-header reveal">
+            <h2>The Yoga Dream</h2>
+            <p>Your passion runs deep. Your vision is clear. And your future is luminous.</p>
+        </div>
+
+        <div class="yoga-container">
+            <div class="yoga-text reveal">
+                <h3>From the Mat to the World</h3>
+                <p>You don&apos;t just practice yoga — you <em>live</em> it. Every breath, every asana, every moment of stillness is a step toward the teacher you are becoming. But you are not stopping there.</p>
+                <p>You dream of building something of your own — a startup that brings wellness, peace, and transformation to countless lives. That dream is not far. It is already taking shape in your dedication.</p>
+                <div class="yoga-quote">
+                    &quot;The body benefits from movement, and the mind benefits from stillness. You have mastered both, and soon, you will teach the world to do the same.&quot;
+                </div>
+            </div>
+
+            <div class="yoga-visual reveal reveal-delay-2">
+                <div class="circle-bg"></div>
+                <div class="inner-circle"><span>🧘‍♀️</span></div>
+                <div class="startup-badge">
+                    <strong>Coming Soon</strong>
+                    <span>Jyoti&apos;s Yoga Studio</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════ -->
+    <!-- TRAVEL GALLERY -->
+    <!-- ═══════════════════════════════════════ -->
+    <section class="travel" id="travel">
+        <div class="section-header reveal">
+            <h2>Wanderlust &amp; Wonder</h2>
+            <p>Your passport is full of stamps, but your heart is full of stories. Here are just a few moments from your beautiful adventures.</p>
+        </div>
+
+        <div class="gallery">
+            <div class="gallery-card featured reveal">
+                <img src="IMG_MUNNAR" alt="Munnar Tea Gardens">
+                <div class="overlay">
+                    <h4>Munnar, India</h4>
+                    <p>Where the earth wears green and the air smells of tea — you found peace in the hills.</p>
+                </div>
+            </div>
+
+            <div class="gallery-card reveal reveal-delay-1">
+                <img src="IMG_PARIS" alt="Paris Day">
+                <div class="overlay">
+                    <h4>Paris, France</h4>
+                    <p>The day love asked the most beautiful question, and you said yes to forever.</p>
+                </div>
+            </div>
+
+            <div class="gallery-card reveal reveal-delay-2">
+                <img src="IMG_NIGHT" alt="Paris Night">
+                <div class="overlay">
+                    <h4>Eiffel at Night</h4>
+                    <p>Golden lights, endless romance, and a reminder that magic is real.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════ -->
+    <!-- BROTHER&apos;S MESSAGE -->
+    <!-- ═══════════════════════════════════════ -->
+    <section class="message" id="message">
+        <div class="message-container">
+            <h2 class="reveal">A Letter to My Sister</h2>
+            
+            <div class="letter reveal reveal-delay-1">
+                <p>Dear <span class="highlight">Jyoti Didi</span>,</p>
+                <p>Every Raksha Bandhan, I tie a rakhi on your wrist and promise to protect you. But the truth is — you have never needed protection. You have always been the strong one. The brave one. The one who lifts everyone else up.</p>
+                <p>I have watched you grow from that little girl with pigtails into a woman of grace, ambition, and warmth. I have seen you roll out your yoga mat at dawn when the world was still asleep. I have seen you dream of classrooms filled with students finding their breath, and of a startup that will change lives. I have seen you pack your bags with excitement, ready to conquer new cities and collect new memories.</p>
+                <p>You are not just my sister. You are my <span class="highlight">inspiration</span>. The person I look up to. The standard I measure goodness against.</p>
+                <p>On this Raksha Bandhan, I don&apos;t just wish you happiness — I wish you the <span class="highlight">courage</span> to keep building your dreams, the <span class="highlight">peace</span> that yoga brings you multiplied a thousandfold, and the <span class="highlight">joy</span> of knowing that someone, somewhere, is endlessly proud of you.</p>
+                <p>That someone is me. Always.</p>
+                <p style="text-align: right; margin-top: 2rem;">With all my love,<br>Your Brother</p>
+            </div>
+
+            <div class="signature reveal reveal-delay-2">Happy Raksha Bandhan</div>
+            <div class="rakhi-date reveal reveal-delay-3">August 2026 — Forever &amp; Always</div>
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════ -->
+    <!-- FOOTER -->
+    <!-- ═══════════════════════════════════════ -->
+    <footer>
+        <p>Made with <span class="heart">❤️</span> for Jyoti Dutta</p>
+        <p style="margin-top: 0.5rem; font-size: 0.85rem;">This website is a gift — no money could ever buy what you mean to me.</p>
+    </footer>
+
+    <!-- ═══════════════════════════════════════ -->
+    <!-- SCRIPTS -->
+    <!-- ═══════════════════════════════════════ -->
+    <script>
+        // Floating Petals
+        const petalsContainer = document.getElementById('petals');
+        for (let i = 0; i < 25; i++) {
+            const petal = document.createElement('div');
+            petal.className = 'petal';
+            petal.style.left = Math.random() * 100 + '%';
+            petal.style.animationDuration = (Math.random() * 8 + 6) + 's';
+            petal.style.animationDelay = (Math.random() * 10) + 's';
+            petal.style.width = (Math.random() * 8 + 8) + 'px';
+            petal.style.height = petal.style.width;
+            petal.style.opacity = Math.random() * 0.4 + 0.2;
+            petalsContainer.appendChild(petal);
+        }
+
+        // Scroll Reveal
+        const revealElements = document.querySelectorAll('.reveal');
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    revealObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.15, rootMargin: '0px 0px -50px 0px' });
+        revealElements.forEach(el => revealObserver.observe(el));
+
+        // Smooth Scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            });
+        });
+
+        // Parallax Hero
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const hero = document.querySelector('.hero');
+            if (hero && scrolled < hero.offsetHeight) {
+                hero.style.backgroundPositionY = (scrolled * 0.3) + 'px';
+            }
+        });
+
+        // Gallery Click Effect
+        document.querySelectorAll('.gallery-card').forEach(card => {
+            card.addEventListener('click', () => {
+                card.style.transform = 'scale(0.98)';
+                setTimeout(() => { card.style.transform = ''; }, 150);
+            });
+        });
+    </script>
+</body>
+</html>'''
+
+# Replace placeholders
+html_final = html_template.replace('IMG_CHAIR', base64_map['childhood-chair']) \
+                          .replace('IMG_MOM', base64_map['childhood-mom']) \
+                          .replace('IMG_MUNNAR', base64_map['travel-munnar']) \
+                          .replace('IMG_PARIS', base64_map['paris-proposal']) \
+                          .replace('IMG_NIGHT', base64_map['paris-night'])
+
+# Save
+output_path = "/mnt/agents/output/jyoti-rakhi-gift/index.html"
+with open(output_path, "w", encoding="utf-8") as f:
+    f.write(html_final)
+
+file_size_kb = os.path.getsize(output_path) / 1024
+print(f"✅ Website saved successfully!")
+print(f"📁 Location: {output_path}")
+print(f"📊 File size: {file_size_kb:.1f} KB ({file_size_kb/1024:.1f} MB)")
+print(f"🖼️  All 5 images embedded (self-contained single file)")
