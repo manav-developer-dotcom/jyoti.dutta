@@ -775,20 +775,3 @@ html_template = '''<!DOCTYPE html>
 </body>
 </html>'''
 
-# Replace placeholders
-html_final = html_template.replace('IMG_CHAIR', base64_map['childhood-chair']) \
-                          .replace('IMG_MOM', base64_map['childhood-mom']) \
-                          .replace('IMG_MUNNAR', base64_map['travel-munnar']) \
-                          .replace('IMG_PARIS', base64_map['paris-proposal']) \
-                          .replace('IMG_NIGHT', base64_map['paris-night'])
-
-# Save
-output_path = "/mnt/agents/output/jyoti-rakhi-gift/index.html"
-with open(output_path, "w", encoding="utf-8") as f:
-    f.write(html_final)
-
-file_size_kb = os.path.getsize(output_path) / 1024
-print(f"✅ Website saved successfully!")
-print(f"📁 Location: {output_path}")
-print(f"📊 File size: {file_size_kb:.1f} KB ({file_size_kb/1024:.1f} MB)")
-print(f"🖼️  All 5 images embedded (self-contained single file)")
